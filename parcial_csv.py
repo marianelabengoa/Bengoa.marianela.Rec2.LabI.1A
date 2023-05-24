@@ -251,6 +251,7 @@ def menu():
     import os
     while True:
         opcion_1=False
+        opcion_7=False
         os.system("cls")
         print("1. Cargar datos desde archivo")
         print("2. Mostrar cantidad por marca")
@@ -302,8 +303,10 @@ def menu():
                 print("primero carga los datos")
             else:
                 productos_filtrados = filtrar_productos_por_palabra_clave(datos, "Alimento")
+                opcion_7=True
+                print("productos filtrados, para verlos, presione la opcion 8")
         elif opcion == 8:
-            if opcion_1==True:
+            if opcion_7==True:
                 print("primero carga los datos")
             else:
                 mostrar_productos(productos_filtrados)
@@ -318,8 +321,9 @@ def menu():
                 print("primero carga los datos")
             else:
                 list=agregar_elemento("insumos.csv")
-                archivo=input("ingrese el archivo al que lo va a guardar: ")
-                guardar_datos_json(list, archivo)
+                archivo=input("ingrese el archivo json al que lo va a guardar: ")
+                if ".json" in archivo:
+                    guardar_datos_json(list, archivo)
         elif opcion == 11:
             break
         os.system("pause")
