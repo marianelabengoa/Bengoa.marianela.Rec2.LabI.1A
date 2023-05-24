@@ -177,13 +177,13 @@ def aplicar_aumento(producto):
     producto["precio"] = round(precio_actualizado, 2)
     return producto
 
-def aplicar_aumento_a_todos_los_productos(datos):
-    productos_actualizados = list(map(aplicar_aumento, datos))
-    with open("Insumos.csv", "w", newline="") as file:
-        writer = csv.DictWriter(file, fieldnames=["nombre", "marca", "precio"])
-        writer.writeheader()
-        writer.writerows(productos_actualizados)
-    print("Aumento aplicado y productos actualizados guardados en 'Insumos.csv'.")
+# def aplicar_aumento_a_todos_los_productos(datos):
+#     productos_actualizados = list(map(aplicar_aumento, datos))
+#     with open("Insumos.csv", "w", newline="") as file:
+#         writer = csv.DictWriter(file, fieldnames=["nombre", "marca", "precio"])
+#         writer.writeheader()
+#         writer.writerows(productos_actualizados)
+#     print("Aumento aplicado y productos actualizados guardados en 'Insumos.csv'.")
 
 def aumento(datos):
     pr=producto["precio"]
@@ -197,6 +197,53 @@ def aumento(datos):
         print(producto["precio"])
         print("-------------")
 
+def agregar_elemento(nombre_archivo):
+    lista=[]
+    while True:
+        try:
+            id=int(input("ingrese el id (mayor a 50): "))
+            if id >50:
+                break
+                
+        except ValueError:
+            print("id no valido")
+            # id=int(input("ingrese el id (mayor a 50): "))
+
+    nombre=input("ingrese el nombre del producto: ")
+
+    file=open("marcas.txt", "r")
+    marcas=file.read()
+    print(f"""MARCAS
+    
+    {marcas}""")
+    
+    marca=input("ingrese la marca del producto: ")
+    for linea in marcas:
+        if marca in linea:
+            break
+
+
+    while True:
+        try:
+            precio=float(input("ingrese el precio (mayor a 8): "))
+            if precio >8:
+                break
+        except ValueError:
+                print("precio no valido")
+            
+
+    caracteristicas=input("ingrese las caracteristicas del producto: ")
+
+    with open(nombre_archivo, "r", encoding="utf-8") as file:
+        insumo = {
+            "id": id,
+            "nombre": nombre,
+            "marca": marca,
+            "precio": precio,
+            "caracteristicas": caracteristicas
+        }
+        lista.append(insumo)
+    return lista
 
 
 # Código principal
@@ -266,7 +313,14 @@ def menu():
             else:
                 aumento(lista)
             # aplicar_aumento_a_todos_los_productos(lista)
-        elif opcion == 10:
+        elif opcion== 10:
+            if opcion_1==True:
+                print("primero carga los datos")
+            else:
+                list=agregar_elemento("insumos.csv")
+                archivo=input("ingrese el archivo al que lo va a guardar: ")
+                guardar_datos_json(list, archivo)
+        elif opcion == 11:
             break
         os.system("pause")
 
