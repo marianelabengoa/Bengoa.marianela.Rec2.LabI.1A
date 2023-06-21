@@ -343,17 +343,8 @@ def mostrar_stock_marca(datos: list, valor: str, titulo: str):
 # aquellos productos que tengan 2 o menos unidades de stock.
 
 
-def cantidad_marca(datos:list)->dict:
-    cantidad_por_marca = {}
-    for elemento in datos:
-        marca = elemento['marca']
-        cantidad = cantidad_por_marca.get(marca, 0)
-        cantidad += 1
-        cantidad_por_marca[marca] = cantidad
-    return cantidad_por_marca
 
-
-def mostrar_insumos_menos_de_dos_unidades(datos, cantidad_por_marca: dict, nombre_archivo) -> None:
+def mostrar_insumos_menos_de_dos_unidades(datos:list, cantidad_por_marca: dict, nombre_archivo:str) -> None:
     l = []
     for marca in cantidad_por_marca:
         cantidad = cantidad_por_marca[marca]
@@ -368,8 +359,8 @@ def mostrar_insumos_menos_de_dos_unidades(datos, cantidad_por_marca: dict, nombr
                     file.write(f"{item}\n")
 
 
-def csv_menos_de_dos_unidades(datos, nombre_archivo):
-    cantidad=cantidad_marca(datos)
+def csv_menos_de_dos_unidades(datos:list, nombre_archivo:str):
+    cantidad=obtener_cantidad_por_marca(datos)
     mostrar_insumos_menos_de_dos_unidades(datos, cantidad, nombre_archivo)
 
 
