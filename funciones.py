@@ -1,9 +1,9 @@
 import json
 
-
-def leer_datos_csv(nombre_archivo):
+########## OPCION 1 ###########
+def leer_datos_csv(nombre_archivo:str)->list:
     lista = []
-    with open(nombre_archivo, "r", encoding="utf-8") as file:
+    with open(nombre_archivo, "r", encoding = "utf-8") as file:
         for linea in file:
             lista2 = linea.strip().split(",")
             try:
@@ -21,21 +21,22 @@ def leer_datos_csv(nombre_archivo):
     return lista
 
 
-def guardar_datos(datos, nombre_archivo):
-    js = json.dumps(datos, indent=2)
+def guardar_datos(datos:list, nombre_archivo:str)->None:
+    js = json.dumps(datos, indent = 2)
     with open(nombre_archivo, "w") as file:
         file.write(js)
 
 
-def cargar_datos(nombre_archivo):
+def cargar_datos(nombre_archivo:str)->dict:
     with open(nombre_archivo, "r") as file:
         datos = json.load(file)
-        
-
     return datos
 
 
-def obtener_cantidad_por_marca(datos):
+
+########## OPCION 2 ###########
+
+def obtener_cantidad_por_marca(datos:list)->int:
     cantidad_por_marca = {}
     for elemento in datos:
         marca = elemento['marca']
@@ -45,23 +46,25 @@ def obtener_cantidad_por_marca(datos):
     return cantidad_por_marca
 
 
-def mostrar_cantidad_por_marca(cantidad_por_marca):
+def mostrar_cantidad_por_marca(cantidad_por_marca:int)->None:
     for marca in cantidad_por_marca:
         cantidad = cantidad_por_marca[marca]
         print(f"Marca: {marca} - Cantidad: {cantidad}")
 
 
-def agrupar_insumos_por_marca(datos):
+
+########## OPCION 3 ###########
+
+def agrupar_insumos_por_marca(datos:list)->dict:
     insumos_por_marca = {}
     for elemento in datos:
         marca = elemento['marca']
         insumos_por_marca[marca] = insumos_por_marca.get(marca, [])
-        insumos_por_marca[marca].append(
-            (elemento['nombre'], elemento['precio']))
+        insumos_por_marca[marca].append((elemento['nombre'], elemento['precio']))
     return insumos_por_marca
 
 
-def mostrar_insumos_por_marca(datos):
+def mostrar_insumos_por_marca(datos:list)->None:
     insumos_por_marca = {}
 
     for elemento in datos:
@@ -85,7 +88,10 @@ def mostrar_insumos_por_marca(datos):
             print("  Precio:", precio)
 
 
-def buscar_insumos_por_caracteristica(lista, caracteristica):
+
+########## OPCION 4 ###########
+
+def buscar_insumos_por_caracteristica(lista:list, caracteristica:str)->list:
     insumos_con_caracteristica = []
     for insumo in lista:
         if caracteristica in insumo["caracteristicas"]:
@@ -93,7 +99,7 @@ def buscar_insumos_por_caracteristica(lista, caracteristica):
     return insumos_con_caracteristica
 
 
-def mostrar_insumos_con_caracteristica(lista, insumos_con_caracteristica, caracteristica):
+def mostrar_insumos_con_caracteristica(lista:list, insumos_con_caracteristica:list, caracteristica:str)->None:
     insumos_con_caracteristica=buscar_insumos_por_caracteristica(lista, caracteristica)
     if insumos_con_caracteristica:
         print(f"Insumos con la característica '{caracteristica}':")
@@ -105,7 +111,10 @@ def mostrar_insumos_con_caracteristica(lista, insumos_con_caracteristica, caract
             f"No se encontraron insumos con la característica '{caracteristica}'.")
 
 
-def ordenar_lista_por_marca_y_precio(lista):
+
+########## OPCION 5 ###########
+
+def ordenar_lista_por_marca_y_precio(lista:list):
     for i in range(len(lista) - 1):
         for j in range(i + 1, len(lista)):
             if lista[i]['marca'] > lista[j]['marca']:
@@ -114,7 +123,7 @@ def ordenar_lista_por_marca_y_precio(lista):
                 lista[i], lista[j] = lista[j], lista[i]
 
 
-def mostrar_insumos_ordenados_por_marca_y_precio(lista):
+def mostrar_insumos_ordenados_por_marca_y_precio(lista:list)->None:
     print("Insumos ordenados por marca y precio:")
     for insumo in lista:
         print("ID:", insumo['id'])
@@ -127,7 +136,10 @@ def mostrar_insumos_ordenados_por_marca_y_precio(lista):
         print()
 
 
-def realizar_compra(datos):
+
+########## OPCION 6 ###########
+
+def realizar_compra(datos:list)->None:
     compra = []
     total = 0
     while True:
@@ -160,7 +172,7 @@ def realizar_compra(datos):
                 compra.append((producto, cantidad, subtotal))
                 break
             elif producto_encontrado:
-                print("El producto ingresado no es válido. Intente nuevamente.")
+                print("El producto ingresado no es valido")
                 continue
         print(f"Se agregó {cantidad} {producto['nombre']} a la compra.")
     print("***COMPRA FINALIZADA***")
@@ -177,7 +189,10 @@ def realizar_compra(datos):
                        """)
 
 
-def filtrar_productos_por_palabra_clave(datos, palabra_clave):
+
+########## OPCION 7 ###########
+
+def filtrar_productos_por_palabra_clave(datos:list, palabra_clave:str)->list:
     productos_filtrados = []
     for producto in datos:
         if palabra_clave in producto["nombre"]:
@@ -185,7 +200,7 @@ def filtrar_productos_por_palabra_clave(datos, palabra_clave):
     return productos_filtrados
 
 
-def mostrar_productos(lista):
+def mostrar_productos(lista:list)->None:
     for insumo in lista:
         print("ID:", insumo['id'])
         print("Descripción:", insumo['nombre'])
@@ -193,7 +208,10 @@ def mostrar_productos(lista):
         print("Marca:", insumo['marca'])
 
 
-def aplicar_aumento(producto):
+
+
+########## OPCION 9 ###########
+def aplicar_aumento(producto:dict)->dict:
     producto["precio"] = float(producto["precio"].replace("$", ""))
     precio_actualizado = producto["precio"] * 1.084
     producto["precio"] = round(precio_actualizado, 2)
@@ -201,7 +219,7 @@ def aplicar_aumento(producto):
 
 
 
-def aumento(datos):
+def aumento(datos:list)->None:
     for producto in datos:
         pr = producto["precio"]
         pr=str(pr)
@@ -217,8 +235,9 @@ def aumento(datos):
 
 
 
+########## OPCION 10 ###########
 
-def agregar_elemento(nombre_archivo):
+def agregar_elemento(nombre_archivo:str)->list:
     lista = []
     while True:
         try:
@@ -266,15 +285,9 @@ def agregar_elemento(nombre_archivo):
 
 
 
+########## OPCION 11 ###########
 
-
-
-
-
-
-
-
-def llenar_archivo(lista):
+def llenar_archivo(lista:list)->None:
     tipo_archivo=input("ingrese el nombre del archivo al que quiere agregar la informacion (solo es permitido archivos csv o json):")
 
     if ".csv" in tipo_archivo:
@@ -300,11 +313,13 @@ def llenar_archivo(lista):
 
 
 
+
 def menu():
     import os
     while True:
         opcion_1 = False
         opcion_7 = False
+        opcion_10 = False
         os.system("cls")
         print("1. Cargar datos desde archivo")
         print("2. Mostrar cantidad por marca")
@@ -315,8 +330,9 @@ def menu():
         print("7. Filtrar productos por palabra clave")
         print("8. Mostrar productos filtrados")
         print("9. Actualizar precios")
-        print("10. Mostrar ID")
-        print("11. Salir")
+        print("10. agregar productos")
+        print("11. subir nuevos productos a archivo")
+        print("12. Salir")
         opcion = int(input("ingrese opcion:"))
 
         if opcion == 1:
@@ -379,7 +395,12 @@ def menu():
                 print("primero carga los datos")
             else:
                 list = agregar_elemento("insumos.csv")
-                llenar_archivo(list)
+                opcion_10 == True
         elif opcion == 11:
+            if opcion_10 == True:
+                print("primero carga los datos")
+            else:
+                llenar_archivo(list)
+        elif opcion == 12:
             break
         os.system("pause")
