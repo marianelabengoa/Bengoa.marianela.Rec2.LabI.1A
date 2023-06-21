@@ -1,4 +1,4 @@
-ID,NOMBRE,MARCA, ,CARACTERISTICAS
+ID,NOMBRE,MARCA,PRECIO,CARACTERISTICAS
 1,Alimento para perros,Pedigree,$12.99,Sabor delicioso~Nutrición equilibrada~Contiene vitaminas y minerales
 2,Alimento para gatos,Purina ONE,$9.99,Alta calidad~Proteínas de primera~Promueve un pelaje saludable
 3,Juguete para perros,Kong,$15.50,Duradero~Ideal para masticadores agresivos
@@ -49,4 +49,3 @@ ID,NOMBRE,MARCA, ,CARACTERISTICAS
 48,Juguete para perros,West Paw Design,$13.99,Resistente~Libre de BPA~Ideal para juegos de buscar
 49,Arenero para gatos,Petmate,$16.99,Fácil acceso~Borde alto~Fácil de limpiar
 50,Alimento para perros,Wellness CORE,$29.99,Alta proteína~Ingredientes naturales~Sin granos~Salud digestiva
-

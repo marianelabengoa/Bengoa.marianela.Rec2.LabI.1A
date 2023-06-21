@@ -21,15 +21,16 @@ def leer_datos_csv(nombre_archivo):
     return lista
 
 
-def guardar_datos_json(datos, nombre_archivo):
+def guardar_datos(datos, nombre_archivo):
     js = json.dumps(datos, indent=2)
     with open(nombre_archivo, "w") as file:
         file.write(js)
 
 
-def cargar_datos_json(nombre_archivo):
+def cargar_datos(nombre_archivo):
     with open(nombre_archivo, "r") as file:
         datos = json.load(file)
+        
 
     return datos
 
@@ -168,11 +169,12 @@ def realizar_compra(datos):
         print(f"{cantidad} {producto['nombre']} - Subtotal: {subtotal}")
     print("Total de la compra:", total)
 
-    with open("factura_de_la_compra.txt", "w") as file:
+    with open("factura_de_la_compra.txt", "a") as file:
         file.write("""Cantidad / Producto / Subtotal\n\n""")
         for producto, cantidad, subtotal in compra:
-            file.write(
-                f"""{cantidad} / {producto['nombre']} / {subtotal}\nTotal: {total}\n""")
+            file.write(f"""{cantidad} / {producto['nombre']} / {subtotal}\nTotal: {total}\n
+                       
+                       """)
 
 
 def filtrar_productos_por_palabra_clave(datos, palabra_clave):
@@ -197,28 +199,23 @@ def aplicar_aumento(producto):
     producto["precio"] = round(precio_actualizado, 2)
     return producto
 
-# def aplicar_aumento_a_todos_los_productos(datos):
-#     productos_actualizados = list(map(aplicar_aumento, datos))
-#     with open("Insumos.csv", "w", newline="") as file:
-#         writer = csv.DictWriter(file, fieldnames=["nombre", "marca", "precio"])
-#         writer.writeheader()
-#         writer.writerows(productos_actualizados)
-#     print("Aumento aplicado y productos actualizados guardados en 'Insumos.csv'.")
 
 
 def aumento(datos):
     for producto in datos:
         pr = producto["precio"]
         pr=str(pr)
-        pr = (pr.strip("$").replace(",", ".").replace("[A-Z]", "").replace(" ","0"))
+        pr = (pr.strip("$").replace(",", ".").replace("PRECIO", "").replace(" ","0").replace("","0"))
         pr = float(pr)
-        aumento = pr+(pr*0.084)
+        aumento = pr+(pr*0.84)
         producto["precio"] = pr
     for producto in datos:
         print(producto["marca"])
         print(producto["nombre"])
         print(producto["precio"])
         print("-------------")
+
+
 
 
 def agregar_elemento(nombre_archivo):
@@ -268,7 +265,41 @@ def agregar_elemento(nombre_archivo):
     return lista
 
 
-# Código principal
+
+
+
+
+
+
+
+
+
+def llenar_archivo(lista):
+    tipo_archivo=input("ingrese el nombre del archivo al que quiere agregar la informacion (solo es permitido archivos csv o json):")
+
+    if ".csv" in tipo_archivo:
+        with open(tipo_archivo,"a")as file: 
+            for elemento in lista:
+                datos=(f"""
+                       
+                {elemento['id']},
+                {elemento['nombre']},
+                {elemento['marca']},
+                ${elemento['precio']},
+                {elemento['caracteristicas']}
+                       
+                       """)
+                file.write(datos)
+
+    elif ".json" in tipo_archivo:
+        with open(tipo_archivo,"w")as file:
+            json.dump(lista,file,indent=4)
+    
+    else:
+        print("no valido")
+
+
+
 def menu():
     import os
     while True:
@@ -285,13 +316,15 @@ def menu():
         print("8. Mostrar productos filtrados")
         print("9. Actualizar precios")
         print("10. Mostrar ID")
-        print("1. Salir")
+        print("11. Salir")
         opcion = int(input("ingrese opcion:"))
 
         if opcion == 1:
+            archivo=input("ingrese el nombre del archivo al que le gustaria cargar los datos: ")
             lista = leer_datos_csv("insumos.csv")
-            guardar_datos_json(lista, "insumos.json")
-            datos = cargar_datos_json("insumos.json")
+            guardar_datos(lista, archivo)
+            datos = cargar_datos(archivo)
+
             opcion_1 = True
         elif opcion == 2:
             if (opcion_1 == True):
@@ -325,30 +358,28 @@ def menu():
             if opcion_1 == True:
                 print("primero carga los datos")
             else:
-                productos_filtrados = filtrar_productos_por_palabra_clave(
-                    datos, "Alimento")
+                list=[]
+                productos_filtrados = filtrar_productos_por_palabra_clave(datos, "Alimento")
+                list.append(productos_filtrados)
                 opcion_7 = True
                 print("productos filtrados, para verlos, presione la opcion 8")
         elif opcion == 8:
             if opcion_7 == True:
                 print("primero carga los datos")
             else:
-                mostrar_productos(productos_filtrados)
+                archivo = input("ingrese el archivo json al que lo va a guardar: ")
+                guardar_datos(list, archivo)
         elif opcion == 9:
             if opcion_1 == True:
                 print("primero carga los datos")
             else:
                 aumento(lista)
-            # aplicar_aumento_a_todos_los_productos(lista)
         elif opcion == 10:
             if opcion_1 == True:
                 print("primero carga los datos")
             else:
                 list = agregar_elemento("insumos.csv")
-                archivo = input(
-                    "ingrese el archivo json al que lo va a guardar: ")
-                if ".json" in archivo:
-                    guardar_datos_json(list, archivo)
+                llenar_archivo(list)
         elif opcion == 11:
             break
         os.system("pause")
