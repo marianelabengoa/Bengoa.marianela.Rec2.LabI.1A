@@ -36,7 +36,7 @@ def cargar_datos(nombre_archivo:str)->dict:
 
 ########## OPCION 2 ###########
 
-def obtener_cantidad_por_marca(datos:list)->int:
+def obtener_cantidad_por_marca(datos:list)->dict:
     cantidad_por_marca = {}
     for elemento in datos:
         marca = elemento['marca']
@@ -46,7 +46,7 @@ def obtener_cantidad_por_marca(datos:list)->int:
     return cantidad_por_marca
 
 
-def mostrar_cantidad_por_marca(cantidad_por_marca:int)->None:
+def mostrar_cantidad_por_marca(cantidad_por_marca:dict)->None:
     for marca in cantidad_por_marca:
         cantidad = cantidad_por_marca[marca]
         print(f"Marca: {marca} - Cantidad: {cantidad}")
@@ -312,6 +312,68 @@ def llenar_archivo(lista:list)->None:
         print("no valido")
 
 
+########## OPCION 12 ###########
+# Agregar opción stock por marca: Pedirle al usuario una marca y
+# mostrar el stock total de los productos de esa marca.
+
+
+def set_por_stock(datos: list, valor: str)->set:
+    productos = set()
+    for elemento in datos:
+        productos.add(elemento[valor])
+    return productos
+
+def stock_por_marca(datos: list, set: set, valor: str, titulo: str)->None:
+    titulo.upper
+    for producto in set:
+        print(f"-------------------------\n{titulo} : {producto}")
+        for marca in datos:
+            if (producto == marca[valor]):
+                print(f"{marca['nombre']}")
+
+
+def mostrar_stock_marca(datos: list, valor: str, titulo: str):
+    sets = set_por_stock(datos, valor)
+    stock_por_marca(datos, sets, valor, titulo)
+
+
+########## OPCION 13 ###########
+# Agregar opción imprimir bajo stock. Que imprima en un archivo de
+# texto en formato csv. Un listado con el nombre de producto y el stock de
+# aquellos productos que tengan 2 o menos unidades de stock.
+
+
+def cantidad_marca(datos:list)->dict:
+    cantidad_por_marca = {}
+    for elemento in datos:
+        marca = elemento['marca']
+        cantidad = cantidad_por_marca.get(marca, 0)
+        cantidad += 1
+        cantidad_por_marca[marca] = cantidad
+    return cantidad_por_marca
+
+
+def mostrar_insumos_menos_de_dos_unidades(datos, cantidad_por_marca: dict, nombre_archivo) -> None:
+    l = []
+    for marca in cantidad_por_marca:
+        cantidad = cantidad_por_marca[marca]
+        if cantidad <= 2:
+            for elemento in datos:
+                if elemento["marca"] == marca:
+                    nombre = elemento["nombre"]
+                    l.append(nombre)
+
+    with open(nombre_archivo, "w") as file: 
+                for item in l:
+                    file.write(f"{item}\n")
+
+
+def csv_menos_de_dos_unidades(datos, nombre_archivo):
+    cantidad=cantidad_marca(datos)
+    mostrar_insumos_menos_de_dos_unidades(datos, cantidad, nombre_archivo)
+
+
+
 
 
 def menu():
@@ -330,9 +392,11 @@ def menu():
         print("7. Filtrar productos por palabra clave")
         print("8. Mostrar productos filtrados")
         print("9. Actualizar precios")
-        print("10. agregar productos")
-        print("11. subir nuevos productos a archivo")
-        print("12. Salir")
+        print("10. Agregar productos")
+        print("11. Subir nuevos productos a archivo")
+        print("12. Stock por marca")
+        print("13. Crear un csv listado con el nombre de producto y el stock de aquellos productos que tengan 2 o menos unidades de stock.")
+        print("14. Salir")
         opcion = int(input("ingrese opcion:"))
 
         if opcion == 1:
@@ -402,5 +466,10 @@ def menu():
             else:
                 llenar_archivo(list)
         elif opcion == 12:
+            mostrar_stock_marca(datos, "marca", "marca")
+        elif opcion == 13:
+            archivo=input("ingrese el nombre del archivo al que le gustaria cargar los datos: ")
+            csv_menos_de_dos_unidades(datos, archivo)
+        elif opcion == 14:
             break
         os.system("pause")
