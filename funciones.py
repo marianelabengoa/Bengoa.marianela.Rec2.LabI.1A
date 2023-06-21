@@ -291,7 +291,7 @@ def llenar_archivo(lista:list)->None:
     tipo_archivo=input("ingrese el nombre del archivo al que quiere agregar la informacion (solo es permitido archivos csv o json):")
 
     if ".csv" in tipo_archivo:
-        with open(tipo_archivo,"a")as file: 
+        with open(tipo_archivo, "a") as file: 
             for elemento in lista:
                 datos=(f"""
                        
@@ -305,8 +305,8 @@ def llenar_archivo(lista:list)->None:
                 file.write(datos)
 
     elif ".json" in tipo_archivo:
-        with open(tipo_archivo,"w")as file:
-            json.dump(lista,file,indent=4)
+        with open(tipo_archivo, "w")as file:
+            json.dump(lista, file, indent=4)
     
     else:
         print("no valido")
