@@ -21,19 +21,6 @@ def leer_datos_csv(nombre_archivo:str)->list:
     return lista
 
 
-def guardar_datos(datos:list, nombre_archivo:str)->None:
-    js = json.dumps(datos, indent = 2)
-    with open(nombre_archivo, "w") as file:
-        file.write(js)
-
-
-def cargar_datos(nombre_archivo:str)->dict:
-    with open(nombre_archivo, "r") as file:
-        datos = json.load(file)
-    return datos
-
-
-
 ########## OPCION 2 ###########
 
 def obtener_cantidad_por_marca(datos:list)->dict:
@@ -142,51 +129,66 @@ def mostrar_insumos_ordenados_por_marca_y_precio(lista:list)->None:
 def realizar_compra(datos:list)->None:
     compra = []
     total = 0
-    while True:
-        marca = input(
-            "Ingrese la marca de los insumos que desea comprar (o 'Salir' para finalizar): ")
-        if marca.lower() == "salir":
+    marca_encontrada=False
+    confirm=True
+
+    while confirm==True:
+        marca = input("Ingrese la marca de los insumos que desea comprar (o 'Salir' para finalizar): ").capitalize()
+        if marca == "Salir":
             break
         for producto in datos:
             if producto["marca"] == marca:
                 print("Descripción:", producto["nombre"])
                 print("Precio:", producto["precio"])
                 print()
-        producto_nombre = input(
-            "Ingrese el nombre del producto que desea comprar (o 'Salir' para finalizar la compra): ")
-        if producto_nombre.lower() == "salir":
+                marca_encontrada = True
+        if not marca_encontrada:
+            print("marca no encontrada")
+            
+        
+        producto_nombre = input("Ingrese el nombre del producto que desea comprar (o 'Salir' para finalizar la compra): ").capitalize()
+        if producto_nombre == "Salir":
             break
-        try:
-            cantidad = int(input("Ingrese la cantidad deseada: "))
-        except:
-            print("no es un numero")
 
         producto_encontrado = False
         subtotal = 0
+
         for producto in datos:
             if producto["nombre"] == producto_nombre:
                 producto_encontrado = True
+                try:
+                    cantidad = int(input("Ingrese la cantidad deseada: "))
+                except ValueError:
+                    print("no es un numero")
                 producto["precio"] = float(producto["precio"].replace("$", ""))
                 subtotal = producto["precio"] * cantidad
                 total += subtotal
                 compra.append((producto, cantidad, subtotal))
+                print(f"Se agregó {cantidad} {producto['nombre']} a la compra.")
                 break
-            elif producto_encontrado:
-                print("El producto ingresado no es valido")
-                continue
-        print(f"Se agregó {cantidad} {producto['nombre']} a la compra.")
-    print("***COMPRA FINALIZADA***")
-    print("Detalles de la compra:")
-    for producto, cantidad, subtotal in compra:
-        print(f"{cantidad} {producto['nombre']} - Subtotal: {subtotal}")
-    print("Total de la compra:", total)
+        if not producto_encontrado:
+            print("El producto ingresado no es valido")
+                
 
-    with open("factura_de_la_compra.txt", "a") as file:
-        file.write("""Cantidad / Producto / Subtotal\n\n""")
+        print("***COMPRA FINALIZADA***")
+        print("Detalles de la compra:")
         for producto, cantidad, subtotal in compra:
-            file.write(f"""{cantidad} / {producto['nombre']} / {subtotal}\nTotal: {total}\n
-                       
-                       """)
+            print(f"{cantidad} {producto['nombre']} - Subtotal: {subtotal}")
+        print("Total de la compra:", total)
+
+        with open("factura_de_la_compra.txt", "a") as file:
+            file.write("""Cantidad / Producto / Subtotal\n\n""")
+            for producto, cantidad, subtotal in compra:
+                file.write(f"""{cantidad} / {producto['nombre']} / {subtotal}\nTotal: {total}\n
+                        
+                        """)
+        
+        respuesta=input("\ndesea ingrear otro producto? (si/no) ").lower()
+        if respuesta=="si":
+            confirm=True
+        else:
+            confirm=False
+
 
 
 
@@ -207,7 +209,10 @@ def mostrar_productos(lista:list)->None:
         print("Precio:", insumo['precio'])
         print("Marca:", insumo['marca'])
 
-
+def guardar_datos(datos:list, nombre_archivo:str)->None:
+    js = json.dumps(datos, indent = 2)
+    with open(nombre_archivo, "w") as file:
+        file.write(js)
 
 
 ########## OPCION 9 ###########
@@ -392,9 +397,7 @@ def menu():
 
         if opcion == 1:
             archivo=input("ingrese el nombre del archivo al que le gustaria cargar los datos: ")
-            lista = leer_datos_csv("insumos.csv")
-            guardar_datos(lista, archivo)
-            datos = cargar_datos(archivo)
+            datos = leer_datos_csv(archivo)
 
             opcion_1 = True
         elif opcion == 2:
@@ -413,13 +416,13 @@ def menu():
                 print("primero carga los datos")
             else:
                 caracteristica = input("Ingrese una característica: ")
-                mostrar_insumos_con_caracteristica(lista, datos, caracteristica)
+                mostrar_insumos_con_caracteristica(datos, datos, caracteristica)
         elif opcion == 5:
             if opcion_1 == True:
                 print("primero carga los datos")
             else:
-                ordenar_lista_por_marca_y_precio(lista)
-                mostrar_insumos_ordenados_por_marca_y_precio(lista)
+                ordenar_lista_por_marca_y_precio(datos)
+                mostrar_insumos_ordenados_por_marca_y_precio(datos)
         elif opcion == 6:
             if opcion_1 == True:
                 print("primero carga los datos")
@@ -432,19 +435,21 @@ def menu():
                 list=[]
                 productos_filtrados = filtrar_productos_por_palabra_clave(datos, "Alimento")
                 list.append(productos_filtrados)
+                archivo = input("ingrese el archivo json al que lo va a guardar: ")
+                guardar_datos(list, archivo)
                 opcion_7 = True
                 print("productos filtrados, para verlos, presione la opcion 8")
         elif opcion == 8:
             if opcion_7 == True:
                 print("primero carga los datos")
             else:
-                archivo = input("ingrese el archivo json al que lo va a guardar: ")
-                guardar_datos(list, archivo)
+                for i in list:
+                    print(i)
         elif opcion == 9:
             if opcion_1 == True:
                 print("primero carga los datos")
             else:
-                aumento(lista)
+                aumento(datos)
         elif opcion == 10:
             if opcion_1 == True:
                 print("primero carga los datos")
