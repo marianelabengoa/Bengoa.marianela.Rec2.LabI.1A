@@ -1,5 +1,3 @@
-import random
-import sys
 import os
 
 def cargar_archivos(nombre_archivo:str) -> list:
@@ -45,8 +43,7 @@ def filtrar_por_tipo(lista: list, nombre_archivo:str)->bool:
 
             with open(nombre_archivo, "w") as file:
                 for pelicula in lista1:
-                    file.write(f"id: {id}, titulo: {titulo}, genero: {genero}, duracion: {duracion}\n\n")
-
+                    file.write(f"id: {id}, titulo: {titulo}, genero: {genero}, duracion: {duracion}\n")
             return True
 
         if not genero_encontrado:
