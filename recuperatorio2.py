@@ -82,6 +82,7 @@ def guardar_peliculas(lista: list)->None:
 
 
 def menu():
+    opcion1=False
     while True:
         os.system("cls")
         print("*** MENU DE OPCIONES ***")
@@ -99,20 +100,33 @@ def menu():
             archivo = input(
                 "ingrese el nombre del archivo del que quiere cargar los datos: ")
             lista = cargar_archivos(archivo)
+            opcion1=True
         elif opcion == 2:
-            imprimir_lista(lista)
+            if opcion1==False:
+                print("primero ingresa los datos (opcion1)")
+            else:
+                imprimir_lista(lista)
         elif opcion == 3:
             pass
         elif opcion == 4:
-            nombre_archivo = input(
-                "ingrese el nombre del archivo al que quiere filtrar las peliculas: ")
-            filtrar_por_tipo(lista, nombre_archivo)
+            if opcion1==False:
+                print("primero ingresa los datos (opcion1)")
+            else:
+                nombre_archivo = input(
+                    "ingrese el nombre del archivo al que quiere filtrar las peliculas: ")
+                filtrar_por_tipo(lista, nombre_archivo)
         elif opcion == 5:
-            list=mostrar_duraciones(lista)
-            mostrar_peliculas_ordenadas_por_genero_y_duracion(list)
+            if opcion1==False:
+                print("primero ingresa los datos (opcion1)")
+            else:
+                list=mostrar_duraciones(lista)
+                mostrar_peliculas_ordenadas_por_genero_y_duracion(list)
         elif opcion == 6:
-            list=mostrar_duraciones(lista)
-            guardar_peliculas(list)
+            if opcion1==False:
+                print("primero ingresa los datos (opcion1)")
+            else:
+                list=mostrar_duraciones(lista)
+                guardar_peliculas(list)
         elif opcion == 7:
             break
         os.system("pause")

@@ -401,35 +401,35 @@ def menu():
 
             opcion_1 = True
         elif opcion == 2:
-            if (opcion_1 == True):
+            if (opcion_1 == False):
                 print("primero carga los datos")
             else:
                 cantidad_por_marca = obtener_cantidad_por_marca(datos)
                 mostrar_cantidad_por_marca(cantidad_por_marca)
         elif opcion == 3:
-            if opcion_1 == True:
+            if opcion_1 == False:
                 print("primero carga los datos")
             else:
                 mostrar_insumos_por_marca(datos)
         elif opcion == 4:
-            if opcion_1 == True:
+            if opcion_1 == False:
                 print("primero carga los datos")
             else:
                 caracteristica = input("Ingrese una característica: ")
                 mostrar_insumos_con_caracteristica(datos, datos, caracteristica)
         elif opcion == 5:
-            if opcion_1 == True:
+            if opcion_1 == False:
                 print("primero carga los datos")
             else:
                 ordenar_lista_por_marca_y_precio(datos)
                 mostrar_insumos_ordenados_por_marca_y_precio(datos)
         elif opcion == 6:
-            if opcion_1 == True:
+            if opcion_1 == False:
                 print("primero carga los datos")
             else:
                 realizar_compra(datos)
         elif opcion == 7:
-            if opcion_1 == True:
+            if opcion_1 == False:
                 print("primero carga los datos")
             else:
                 list=[]
@@ -437,27 +437,27 @@ def menu():
                 list.append(productos_filtrados)
                 archivo = input("ingrese el archivo json al que lo va a guardar: ")
                 guardar_datos(list, archivo)
-                opcion_7 = True
+                opcion_7 = False
                 print("productos filtrados, para verlos, presione la opcion 8")
         elif opcion == 8:
-            if opcion_7 == True:
+            if opcion_7 == False:
                 print("primero carga los datos")
             else:
                 for i in list:
                     print(i)
         elif opcion == 9:
-            if opcion_1 == True:
+            if opcion_1 == False:
                 print("primero carga los datos")
             else:
                 aumento(datos)
         elif opcion == 10:
-            if opcion_1 == True:
+            if opcion_1 == False:
                 print("primero carga los datos")
             else:
                 list = agregar_elemento("insumos.csv")
-                opcion_10 == True
+                opcion_10 == False
         elif opcion == 11:
-            if opcion_10 == True:
+            if opcion_10 == False:
                 print("primero carga los datos")
             else:
                 llenar_archivo(list)
